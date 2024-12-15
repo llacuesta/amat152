@@ -6,6 +6,8 @@ const BSCSCurriculum = {
                 { id: "cmsc12", name: "CMSC 12", workload: 2, units: 3, prereqs: [] },
                 { id: "cmsc56", name: "CMSC 56", workload: 2, units: 3, prereqs: [] },
                 { id: "math27", name: "MATH 27", workload: 4, units: 3, prereqs: [] },
+                { id: "ethics1", name: "ETHICS 1", workload: 2, units: 3, prereqs: [] },
+                { id: "sts1", name: "STS 1", workload: 3, units: 3, prereqs: [] },
                 { id: "hk11", name: "HK 11", workload: 1, units: 0, prereqs: [] },
             ],
         },
@@ -15,6 +17,9 @@ const BSCSCurriculum = {
                 { id: "cmsc21", name: "CMSC 21", workload: 3, units: 3, prereqs: ["cmsc12"] },
                 { id: "cmsc57", name: "CMSC 57", workload: 2, units: 3, prereqs: ["cmsc56"] },
                 { id: "math28", name: "MATH 28", workload: 3, units: 3, prereqs: ["math27"] },
+                { id: "arts1", name: "ARTS 1", workload: 3, units: 3, prereqs: [] },
+                { id: "kas1", name: "KAS 1", workload: 3, units: 3, prereqs: [] },
+                { id: "hk12", name: "HK 12", workload: 2, units: 0, prereqs: ["hk12"] },
             ],
         },
     },
@@ -26,6 +31,9 @@ const BSCSCurriculum = {
                 { id: "cmsc150", name: "CMSC 150", workload: 4, units: 3, prereqs: ["cmsc21", "math27"] },
                 { id: "cmsc123", name: "CMSC 123", workload: 3, units: 3, prereqs: ["cmsc21", "cmsc57"] },
                 { id: "cmsc130", name: "CMSC 130", workload: 1, units: 3, prereqs: ["cmsc57"] },
+                { id: "pi10", name: "PI 10", workload: 4, units: 3, prereqs: [] },
+                { id: "nstp1", name: "NSTP 1", workload: 2, units: 0, prereqs: [] },
+                { id: "hk12", name: "HK 12", workload: 2, units: 0, prereqs: ["hk12"] },
             ],
         },
         2: {
@@ -36,6 +44,8 @@ const BSCSCurriculum = {
                 { id: "cmsc127", name: "CMSC 127", workload: 3, units: 3, prereqs: [] },
                 { id: "cmsc131", name: "CMSC 131", workload: 2, units: 3, prereqs: ["cmsc21"] },
                 { id: "stat101", name: "STAT 101", workload: 2, units: 3, prereqs: [] },
+                { id: "nstp2", name: "NSTP 2", workload: 2, units: 0, prereqs: ["nstp1"] },
+                { id: "hk12", name: "HK 12", workload: 2, units: 0, prereqs: ["hk12"] },
             ],
         },
     },
@@ -48,6 +58,7 @@ const BSCSCurriculum = {
                 { id: "cmsc141", name: "CMSC 141", workload: 4, units: 3, prereqs: ["cmsc123"] },
                 { id: "cmsc170", name: "CMSC 170", workload: 3, units: 3, prereqs: ["cmsc123"] },
                 { id: "cmsc132", name: "CMSC 132", workload: 2, units: 3, prereqs: ["cmsc123"] },
+                { id: "comm10", name: "COMM 10", workload: 3, units: 3, prereqs: [] },
             ],
         },
         2: {
@@ -82,20 +93,7 @@ const BSCSCurriculum = {
                 { id: "cmsc190_2", name: "CMSC 190 (SP 2)", workload: 5, units: 3, prereqs: ["cmsc190_1"] },
             ],
         },
-    },
-    generalElectives: {
-        courses: [
-            { id: "ethics1", name: "ETHICS 1", workload: 2, units: 3, prereqs: [] },
-            { id: "sts1", name: "STS 1", workload: 3, units: 3, prereqs: [] },
-            { id: "arts1", name: "ARTS 1", workload: 3, units: 3, prereqs: [] },
-            { id: "kas1", name: "KAS 1", workload: 3, units: 3, prereqs: [] },
-            { id: "hk12", name: "HK 12", workload: 2, units: 0, prereqs: [] },
-            { id: "pi10", name: "PI 10", workload: 4, units: 3, prereqs: [] },
-            { id: "nstp1", name: "NSTP 1", workload: 2, units: 0, prereqs: [] },
-            { id: "nstp2", name: "NSTP 2", workload: 2, units: 0, prereqs: ["nstp1"] },
-            { id: "comm10", name: "COMM 10", workload: 3, units: 3, prereqs: [] },
-        ]
-    },
+    }
 };
 
 export {

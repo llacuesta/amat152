@@ -8,19 +8,17 @@ class Curriculum {
     // build curriculum graph
     buildGraph() {
         for (const year in this.curriculumData) {
-            if (year !== "generalElectives") {
-                for (const semester in this.curriculumData[year]) {
-                    const semesterData = this.curriculumData[year][semester];
+            for (const semester in this.curriculumData[year]) {
+                const semesterData = this.curriculumData[year][semester];
 
-                    if (semesterData.courses) {
-                        semesterData.courses.forEach(course => {
-                            this.addNode(course);
+                if (semesterData.courses) {
+                    semesterData.courses.forEach(course => {
+                        this.addNode(course);
 
-                            course.prereqs.forEach(prereq => {
-                                this.addEdge(prereq, course.id);
-                            });
+                        course.prereqs.forEach(prereq => {
+                            this.addEdge(prereq, course.id);
                         });
-                    }
+                    });
                 }
             }
         }
@@ -71,13 +69,14 @@ class Curriculum {
 
     getCourseById(courseId) {
         if (this.graph[courseId]) {
-            return this.graph[courseId];
+            let course = this.graph[courseId];
+            return {
+                id: course.id,
+                name: course.name,
+                workload: course.workload,
+                units: course.units,
+            }
         }
-
-        // if course is not found in the graph
-        const electives = this.curriculumData["generalElectives"].courses;
-        const elective = electives.find(course => course.id === courseId);
-        if (elective) return elective;
     }
 }
 
