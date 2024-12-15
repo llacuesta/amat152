@@ -1,6 +1,4 @@
-import { BSCSCurriculum } from "../data/curriculum_data.js";
 import Curriculum from "./curriculum.js";
-
 
 /**
  * Generates course suggestions for next semester.
@@ -14,7 +12,7 @@ import Curriculum from "./curriculum.js";
  * @param {[string]} priority 
  * @returns [{ courseId, courseName, workload, units }]
  */
-function getCourses(curriculum, year, sem, criterion, isMax, haventTaken = [], priority = []) {
+export function getCourses(curriculum, year, sem, criterion, isMax, haventTaken = [], priority = []) {
     /*
         HELPER FUNCTIONS
     */
@@ -163,7 +161,7 @@ function getCourses(curriculum, year, sem, criterion, isMax, haventTaken = [], p
  * @param {int} sem 
  * @returns { [taken], [remaining] }
  */
-function getTakenAndRemainingCourses(curriculum, year, sem) {
+export function getTakenAndRemainingCourses(curriculum, year, sem) {
     const taken = [];
     const remaining = [];
 
