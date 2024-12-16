@@ -6,17 +6,7 @@ const courses = [
     data: {
       courseID: "CMSC 12",
       units: "3",
-      status: 0,
-    },
-  },
-  {
-    id: "cmsc12",
-    type: "custom",
-    position: { x: 200, y: 200 },
-    data: {
-      courseID: "CMSC 15",
-      units: "3",
-      status: 0,
+      status: 2,
     },
   },
   {
