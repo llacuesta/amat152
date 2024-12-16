@@ -9,9 +9,9 @@ exports.getTest = () => (req, res) => {
 }
 
 exports.getCourseHandler = () => (req, res) => {
-    const { year, sem, criterion, isMax, haventTaken, priority } = req.body;
+    const { sem, haventTaken, priority, workloadPreference } = req.body;
     const curriculum = new Curriculum(BSCSCurriculum);
-    const suggestedCourses = getCourses(curriculum, year, sem, criterion, isMax, haventTaken, priority);
+    const suggestedCourses = getCoursesDP(curriculum, sem, haventTaken, priority, workloadPreference);
     return res.send({ success: true, suggestedCourses });
 }
 
