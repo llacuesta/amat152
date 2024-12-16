@@ -80,4 +80,4 @@ class Curriculum {
     }
 }
 
-export default Curriculum
+module.exports = Curriculum

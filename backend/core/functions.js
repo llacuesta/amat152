@@ -1,4 +1,4 @@
-import Curriculum from "./curriculum.js";
+const { Curriculum } = require("./curriculum")
 
 /**
  * Generates course suggestions for next semester.
@@ -12,7 +12,7 @@ import Curriculum from "./curriculum.js";
  * @param {[string]} priority 
  * @returns [{ courseId, courseName, workload, units }]
  */
-export function getCourses(curriculum, year, sem, criterion, isMax, haventTaken = [], priority = []) {
+function getCourses(curriculum, year, sem, criterion, isMax, haventTaken = [], priority = []) {
     /*
         HELPER FUNCTIONS
     */
@@ -161,7 +161,7 @@ export function getCourses(curriculum, year, sem, criterion, isMax, haventTaken 
  * @param {int} sem 
  * @returns { [taken], [remaining] }
  */
-export function getTakenAndRemainingCourses(curriculum, year, sem) {
+function getTakenAndRemainingCourses(curriculum, year, sem) {
     const taken = [];
     const remaining = [];
 
@@ -185,4 +185,9 @@ export function getTakenAndRemainingCourses(curriculum, year, sem) {
     }
 
     return { taken, remaining };
+}
+
+module.exports = {
+    getCourses,
+    getTakenAndRemainingCourses
 }

@@ -1,4 +1,4 @@
-const BSCSCurriculum = {
+exports.BSCSCurriculum = {
     1: {
         1: {
             minUnits: 15,
@@ -95,7 +95,3 @@ const BSCSCurriculum = {
         },
     }
 };
-
-export {
-    BSCSCurriculum
-}
