@@ -3,6 +3,7 @@ const app = express();
 const PORT = 3000;
 
 // middleware
+app.use(express.json());    // To parse JSON request bodies
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "POST, GET");

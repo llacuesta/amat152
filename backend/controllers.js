@@ -9,11 +9,15 @@ exports.getTest = () => (req, res) => {
 }
 
 exports.getCourseHandler = () => (req, res) => {
-    console.log(req.body);
-    return res.send({ success: true })
+    const { year, sem, criterion, isMax, haventTaken, priority } = req.body;
+    const curriculum = new Curriculum(BSCSCurriculum);
+    const suggestedCourses = getCourses(curriculum, year, sem, criterion, isMax, haventTaken, priority);
+    return res.send({ success: true, suggestedCourses });
 }
 
 exports.getTakenAndRemainingHandler = () => (req, res) => {
-    console.log(req.body)
-    return res.send({ success: true })
+    const { year, sem } = req.body;
+    const curriculum = new Curriculum(BSCSCurriculum);
+    const { taken, remaining } = getTakenAndRemainingCourses(curriculum, year, sem);
+    return res.send({ success: true, taken, remaining });
 }
