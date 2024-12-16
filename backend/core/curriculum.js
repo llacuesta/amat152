@@ -37,6 +37,33 @@ class Curriculum {
         }
     }
 
+    // topological sorting using dfs
+    topologicalSort() {
+        const visited = new Set();
+        const stack = [];
+
+        const dfs = (courseId) => {
+            if (visited.has(courseId)) return;
+            visited.add(courseId);
+
+            if (this.graph[courseId]) {
+                this.graph[courseId].edges.forEach(childCourseId => {
+                    dfs(childCourseId);
+                });
+            }
+
+            stack.push(courseId);
+        };
+
+        for (const courseId in this.graph) {
+            if (!visited.has(courseId)) {
+                dfs(courseId);
+            }
+        }
+
+        return stack.reverse();
+    }
+
     // getters
     getGraph() {
         return this.graph;

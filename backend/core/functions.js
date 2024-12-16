@@ -84,6 +84,10 @@ function getCourses(curriculum, year, sem, criterion, isMax, haventTaken = [], p
     ineligible.delete(...haventTaken)
     availableCourseIds = availableCourseIds.filter(courseId => !ineligible.has(courseId));
 
+    // topological sorting to ensure valid course order
+    const sortedCourseIds = curriculum.topologicalSort();
+    availableCourseIds = availableCourseIds.filter(courseId => sortedCourseIds.includes(courseId));
+
     // optimizing according to criterion
     let minUnits = 15;
     if (criterion === "units") {
