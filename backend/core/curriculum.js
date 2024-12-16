@@ -64,6 +64,11 @@ class Curriculum {
         return stack.reverse();
     }
 
+    // filter courses by availability
+    filterCoursesByAvailability(courses, semester) {
+        return courses.filter(course => course.availability.includes(semester));
+    }
+
     // getters
     getGraph() {
         return this.graph;
@@ -91,7 +96,7 @@ class Curriculum {
 
     getCourses(year, semester) {
         const semesterData = this.getSemester(year, semester);
-        return semesterData ? semesterData.courses : [];
+        return semesterData ? this.filterCoursesByAvailability(semesterData.courses, semester) : [];
     }
 
     getCourseById(courseId) {
@@ -102,6 +107,7 @@ class Curriculum {
                 name: course.name,
                 workload: course.workload,
                 units: course.units,
+                availability: course.availability,
             }
         }
     }
