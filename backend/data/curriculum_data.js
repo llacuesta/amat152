@@ -19,7 +19,7 @@ export const BSCSCurriculum = {
                 { id: "math28", name: "MATH 28", workload: 3, units: 3, prereqs: ["math27"], availability: [1, 2, "M"] },
                 { id: "arts1", name: "ARTS 1", workload: 3, units: 3, prereqs: [], availability: [1, 2] },
                 { id: "kas1", name: "KAS 1", workload: 3, units: 3, prereqs: [], availability: [1, 2] },
-                { id: "hk12", name: "HK 12", workload: 2, units: 0, prereqs: ["hk11"], availability: [1, 2, "M"] },
+                { id: "hk12_1", name: "HK 12", workload: 2, units: 0, prereqs: ["hk11"], availability: [1, 2, "M"] },
             ],
         },
     },
@@ -33,7 +33,7 @@ export const BSCSCurriculum = {
                 { id: "cmsc130", name: "CMSC 130", workload: 1, units: 3, prereqs: ["cmsc57"], availability: [1] },
                 { id: "pi10", name: "PI 10", workload: 4, units: 3, prereqs: [], availability: [1, 2, "M"] },
                 { id: "nstp1", name: "NSTP 1", workload: 2, units: 0, prereqs: [], availability: [1, 2] },
-                { id: "hk12", name: "HK 12", workload: 2, units: 0, prereqs: ["hk11"], availability: [1, 2, "M"] },
+                { id: "hk12_2", name: "HK 12", workload: 2, units: 0, prereqs: ["hk11"], availability: [1, 2, "M"] },
             ],
         },
         2: {
@@ -45,7 +45,7 @@ export const BSCSCurriculum = {
                 { id: "cmsc131", name: "CMSC 131", workload: 2, units: 3, prereqs: ["cmsc21"], availability: [2] },
                 { id: "stat101", name: "STAT 101", workload: 2, units: 3, prereqs: [], availability: [1, 2] },
                 { id: "nstp2", name: "NSTP 2", workload: 2, units: 0, prereqs: ["nstp1"], availability: [1, 2] },
-                { id: "hk12", name: "HK 12", workload: 2, units: 0, prereqs: ["hk11"], availability: [1, 2, "M"] },
+                { id: "hk12_3", name: "HK 12", workload: 2, units: 0, prereqs: ["hk11"], availability: [1, 2, "M"] },
             ],
         },
     },
@@ -71,7 +71,7 @@ export const BSCSCurriculum = {
                 { id: "cmsc180", name: "CMSC 180", workload: 4, units: 3, prereqs: ["cmsc132"], availability: [2] },
             ],
         },
-        0: {
+        3: {
             minUnits: 3,
             courses: [
                 { id: "cmsc198", name: "CMSC 198", workload: 2, units: 3, prereqs: [], availability: ["M"] },
