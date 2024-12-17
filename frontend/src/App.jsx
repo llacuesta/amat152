@@ -23,6 +23,8 @@ import AnnotationNode from "./graph/AnnotationNode";
 import SelectedCourseTag from "./component/SelectedCourseTag";
 import useSelectedNodesStore from "./stores/SelectedNodesStore";
 import usePriorityNodesStore from "./stores/PriorityNodesStore";
+import AboutModal from "./component/AboutModal";
+
 
 const nodeTypes = {
   custom: CustomNode,
@@ -290,7 +292,9 @@ function App() {
                 <div className="text-white font-bold text-2xl">
                   Course Scheduler
                 </div>
-                <button className="btn btn-ghost btn-xs">
+                <button className="btn btn-ghost btn-xs"
+                  onClick={()=>document.getElementById('about_modal').showModal()}
+                >
                   <IconInfoCircle size={18} />
                 </button>
               </div>
@@ -379,7 +383,7 @@ function App() {
               <div className="flex justify-between items-center mt-4">
                 <div className="text-white font-bold text-xs">OPTIMIZATION</div>
                 <select
-                  value={"none"}
+                  value={optimization}
                   className="select select-sm max-w-xs"
                   onChange={(e) => setOptimization(e.target.value)}
                 >
@@ -455,6 +459,8 @@ function App() {
         <Controls />
         <Background variant="dots" gap={40} size={1} />
       </ReactFlow>
+      <AboutModal />
+
     </div>
   );
 }

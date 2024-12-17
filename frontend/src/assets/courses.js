@@ -54,7 +54,7 @@ const courses = [
     type: "custom",
     position: { x: 0, y: 700 },
     data: {
-      courseID: "HK11 56",
+      courseID: "HK11",
       units: "2 (NC)",
       status: 0,
     },
@@ -110,7 +110,7 @@ const courses = [
     },
   },
   {
-    id: "hk12",
+    id: "hk12_1",
     type: "custom",
     position: { x: 200, y: 700 },
     data: {
@@ -170,7 +170,7 @@ const courses = [
     },
   },
   {
-    id: "hk12",
+    id: "hk12_2",
     type: "custom",
     position: { x: 600, y: 600 },
     data: {
@@ -240,11 +240,11 @@ const courses = [
     },
   },
   {
-    id: "hk12",
+    id: "hk12_3",
     type: "custom",
     position: { x: 800, y: 600 },
     data: {
-      courseID: "hk12",
+      courseID: "HK 12",
       units: "2 (NC)",
       status: 0,
     },
@@ -605,7 +605,7 @@ const edges = [
   {
     id: "hk11-12",
     source: "hk11",
-    target: "hk12",
+    target: "hk12_1",
   },
   // 2y1s
   {
