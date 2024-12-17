@@ -1,23 +1,25 @@
 // imports
-const { BSCSCurriculum } = require("./data/curriculum_data.js");
-const { getCoursesDP, getTakenAndRemainingCourses } = require("./core/functions.js");
+import { BSCSCurriculum } from "./data/curriculum_data.js";
+import { getCoursesDP, getTakenAndRemainingCourses } from "./core/functions.js";
+import { Curriculum } from "./core/curriculum.js";
 
 // handle endpoints
-exports.getTest = () => (req, res) => {
+export function getTest() { return (req, res) => {
     console.log("Test API");
     return res.send({ success: true })
-}
+}; }
 
-exports.getCourseHandler = () => (req, res) => {
+
+export function getCourseHandler() { return (req, res) => {
     const { sem, haventTaken, priority, workloadPreference } = req.body;
     const curriculum = new Curriculum(BSCSCurriculum);
     const suggestedCourses = getCoursesDP(curriculum, sem, haventTaken, priority, workloadPreference);
     return res.send({ success: true, suggestedCourses });
-}
+}; }
 
-exports.getTakenAndRemainingHandler = () => (req, res) => {
+export function getTakenAndRemainingHandler() { return (req, res) => {
     const { year, sem } = req.body;
     const curriculum = new Curriculum(BSCSCurriculum);
     const { taken, remaining } = getTakenAndRemainingCourses(curriculum, year, sem);
     return res.send({ success: true, taken, remaining });
-}
+}; }

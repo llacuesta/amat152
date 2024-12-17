@@ -1,8 +1,12 @@
-const controllers = require("./controllers")
+import {
+  getTest,
+  getTakenAndRemainingHandler,
+  getCourseHandler,
+} from "./controllers.js";
 
-module.exports = (app) => {
-    // endpoints
-    app.get("/", controllers.getTest());
-    app.post("/get-taken-courses", controllers.getTakenAndRemainingHandler());
-    app.post("/get-suggested-courses", controllers.getCourseHandler());
-}
+export default (app) => {
+  // endpoints
+  app.get("/", getTest());
+  app.post("/get-taken-courses", getTakenAndRemainingHandler());
+  app.post("/get-suggested-courses", getCourseHandler());
+};

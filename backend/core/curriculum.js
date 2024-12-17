@@ -113,4 +113,4 @@ class Curriculum {
     }
 }
 
-module.exports = Curriculum
+export {Curriculum}
