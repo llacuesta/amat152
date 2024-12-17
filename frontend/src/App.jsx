@@ -371,7 +371,7 @@ function App() {
               <div className="flex justify-between items-center mt-4">
                 <div className="text-white font-bold text-xs">OPTIMIZATION</div>
                 <select
-                  value={"balanced"}
+                  value={optimization}
                   className="select select-sm max-w-xs"
                   onChange={(e) => setOptimization(e.target.value)}
                 >
