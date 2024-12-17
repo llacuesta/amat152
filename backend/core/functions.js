@@ -1,15 +1,13 @@
 import  {Curriculum}  from "./curriculum.js";
 /**
- * Generates course suggestions for next semester.
+ * Generates course suggestions for the next semester based on dynamic programming and workload preferences.
  * 
- * @param {Curriculum} curriculum 
- * @param {int} year 
- * @param {int} sem 
- * @param {string} criterion 
- * @param {boolean} isMax 
- * @param {[string]} haventTaken 
- * @param {[string]} priority 
- * @returns [{ courseId, courseName, workload, units }]
+ * @param {Curriculum} curriculum - An instance of the Curriculum class containing the course data.
+ * @param {number} sem - The current semester for which course suggestions are being generated.
+ * @param {string[]} haventTaken - An array of course IDs that the student hasn't taken yet.
+ * @param {string[]} priority - An array of course IDs that are prioritized for the next semester.
+ * @param {string} workloadPreference - A string indicating the workload preference ('max', 'min', or 'balanced').
+ * @returns {Object[]} - An array of suggested courses, each represented as an object with courseId, courseName, workload, and units.
  */
 function getCoursesDP(curriculum, sem, haventTaken = [], priority = [], workloadPreference = 'balanced') {
     const courses = curriculum.topologicalSort().filter(courseId => {
