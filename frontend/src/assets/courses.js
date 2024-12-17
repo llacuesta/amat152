@@ -54,7 +54,7 @@ const courses = [
     type: "custom",
     position: { x: 0, y: 700 },
     data: {
-      courseID: "HK11 56",
+      courseID: "HK11",
       units: "2 (NC)",
       status: 0,
     },
