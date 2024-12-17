@@ -1,9 +1,27 @@
 import { Handle, Position } from "@xyflow/react";
 
 function CustomNode({ data }) {
-    console.log(`is selected for ${data.courseID} is ${data.status}`)
+  let nodeColor = 'bg-slate-900'
+
+  switch (data.status) {
+    case 0:
+      nodeColor = 'bg-slate-900';
+      break
+    case 1:
+      nodeColor = 'bg-blue-700';
+      break;
+    case 2:
+      nodeColor = 'bg-amber-700';
+      break;
+    case 3:
+      nodeColor = 'bg-green-600';
+      break
+    default:
+      nodeColor = 'bg-slate-900'
+  }
+
   return (
-    <div className={`flex flex-col h-14 w-32 justify-center items-center rounded-xl outline outline-2 outline-white ${data.status == 1 ? `bg-blue-700` : data.status == 2 ? `bg-amber-700` : `bg-slate-900`} hover:cursor-pointer ${data.status == 1 ? 'scale-110' : 'scale-100'} transition-all ${data.status == 2 && 'pointer-events-none'}`}
+    <div className={`flex flex-col h-14 w-32 justify-center items-center rounded-xl outline outline-2 outline-white  hover:cursor-pointer ${nodeColor} ${data.status == 1 ? 'scale-110' : 'scale-100'} transition-all ${(data.status == 2 || data.status === 3) && 'pointer-events-none'}`}
         style={{strokeWidth: 10}}
     >
       <div className="text-white font-bold">{data.courseID}</div>
