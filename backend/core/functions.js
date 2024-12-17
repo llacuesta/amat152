@@ -18,7 +18,7 @@ function getCoursesDP(curriculum, sem, haventTaken = [], priority = [], workload
     });
 
     const n = courses.length;
-    const m = 12; // Assuming 8 semesters for a 4-year course
+    const m = 12; // 12 semesters for a 4-year course
 
     // Initialize dp table
     const dp = Array.from({ length: n + 1 }, () => Array(m + 1).fill(Infinity));
@@ -27,21 +27,29 @@ function getCoursesDP(curriculum, sem, haventTaken = [], priority = [], workload
     // Initialize workload table
     const workload = Array.from({ length: n + 1 }, () => Array(m + 1).fill(0));
 
-    // Fill dp table
+    // Fill dp table with memoization
+    const memo = {};
+    function getWorkload(i, j) {
+        if (memo[`${i}-${j}`] !== undefined) return memo[`${i}-${j}`];
+        let currentWorkload = 0;
+        for (let k = i; k >= 1; k--) {
+            currentWorkload += curriculum.getCourseById(courses[k - 1]).workload;
+            if (workloadPreference === "max") {
+                dp[i][j] = Math.min(dp[i][j], Math.max(dp[k - 1][j - 1], currentWorkload));
+            } else if (workloadPreference === "min") {
+                dp[i][j] = Math.min(dp[i][j], Math.min(dp[k - 1][j - 1], currentWorkload));
+            } else { // balanced
+                dp[i][j] = Math.min(dp[i][j], dp[k - 1][j - 1] + currentWorkload);
+            }
+            workload[i][j] = currentWorkload;
+        }
+        memo[`${i}-${j}`] = dp[i][j];
+        return dp[i][j];
+    }
+
     for (let i = 1; i <= n; i++) {
         for (let j = 1; j <= m; j++) {
-            let currentWorkload = 0;
-            for (let k = i; k >= 1; k--) {
-                currentWorkload += curriculum.getCourseById(courses[k - 1]).workload;
-                if (workloadPreference === "max") {
-                    dp[i][j] = Math.min(dp[i][j], Math.max(dp[k - 1][j - 1], currentWorkload));
-                } else if (workloadPreference === "min") {
-                    dp[i][j] = Math.min(dp[i][j], Math.min(dp[k - 1][j - 1], currentWorkload));
-                } else {
-                    dp[i][j] = Math.min(dp[i][j], Math.max(dp[k - 1][j - 1], currentWorkload));
-                }
-                workload[i][j] = currentWorkload;
-            }
+            getWorkload(i, j);
         }
     }
 
@@ -51,7 +59,16 @@ function getCoursesDP(curriculum, sem, haventTaken = [], priority = [], workload
     while (i > 0 && j > 0) {
         let currentWorkload = workload[i][j];
         for (let k = i; k >= 1; k--) {
-            if (dp[i][j] === Math.max(dp[k - 1][j - 1], currentWorkload)) {
+            let condition;
+            if (workloadPreference === "max") {
+                condition = dp[i][j] === Math.max(dp[k - 1][j - 1], currentWorkload);
+            } else if (workloadPreference === "min") {
+                condition = dp[i][j] === Math.min(dp[k - 1][j - 1], currentWorkload);
+            } else { // balanced
+                condition = dp[i][j] === dp[k - 1][j - 1] + currentWorkload;
+            }
+
+            if (condition) {
                 for (let l = k; l <= i; l++) {
                     const course = curriculum.getCourseById(courses[l - 1]);
                     if (!suggestedCourses.has(course.id)) {
