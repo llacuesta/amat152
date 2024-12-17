@@ -31,7 +31,13 @@ function getCoursesDP(curriculum, sem, haventTaken = [], priority = [], workload
         if (memo[`${i}-${j}`] !== undefined) return memo[`${i}-${j}`];
         let currentWorkload = 0;
         for (let k = i; k >= 1; k--) {
-            currentWorkload += curriculum.getCourseById(courses[k - 1]).workload;
+            const course = curriculum.getCourseById(courses[k - 1]);
+            if (!course.availability.includes(sem) || !haventTaken.includes(course.id)) continue;
+
+            const prereqsMet = course.prereqs.every(prereq => !haventTaken.includes(prereq));
+            if (!prereqsMet) continue;
+
+            currentWorkload += course.workload;
             if (workloadPreference === "max") {
                 dp[i][j] = Math.min(dp[i][j], Math.max(dp[k - 1][j - 1], currentWorkload));
             } else if (workloadPreference === "min") {
@@ -57,6 +63,12 @@ function getCoursesDP(curriculum, sem, haventTaken = [], priority = [], workload
     while (i > 0 && j > 0) {
         let currentWorkload = workload[i][j];
         for (let k = i; k >= 1; k--) {
+            const course = curriculum.getCourseById(courses[k - 1]);
+            if (!course.availability.includes(sem) || !haventTaken.includes(course.id)) continue;
+
+            const prereqsMet = course.prereqs.every(prereq => !haventTaken.includes(prereq));
+            if (!prereqsMet) continue;
+
             let condition;
             if (workloadPreference === "max") {
                 condition = dp[i][j] === Math.max(dp[k - 1][j - 1], currentWorkload);
