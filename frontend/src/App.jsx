@@ -66,7 +66,7 @@ function App() {
 
   const [criterion, setCriterion] = useState("workload");
 
-  const [optimization, setOptimization] = useState("none");
+  const [optimization, setOptimization] = useState("balanced");
 
   const [loadingCourses, setLoadingCourses] = useState(false);
   const [loadingPrompot, setLoadingPrompt] = useState("Loading...");
@@ -106,15 +106,8 @@ function App() {
         const res = await axios.post(
           "http://localhost:3000/get-suggested-courses",
           {
-            year: selectedYear,
-            sem: selectedSem,
-            criterion: criterion,
-            isMax:
-              optimization === "none"
-                ? null
-                : optimization === "max"
-                ? true
-                : false,
+            sem: 3 * (selectedYear - 1) + selectedSem,
+            workloadPreference: optimization,
             haventTaken: [...selectedNodes],
             priority: [...priorityNodes],
           }
@@ -339,9 +332,8 @@ function App() {
                 </button>
               </div>
 
-              <div className="h-[1px] w-full bg-white/20 mt-4"></div>
-
-              <div className="flex flex-col mt-3">
+              {/* <div className="h-[1px] w-full bg-white/20 mt-4"></div> */}
+              {/* <div className="flex flex-col mt-3">
                 <div
                   className="flex flex-row justify-center gap-2 tooltip tooltip-top mb-2"
                   data-tip="What metric do you want to prioritize?"
@@ -372,18 +364,18 @@ function App() {
                     <div className="text-sm">Units</div>
                   </label>
                 </div>
-              </div>
+              </div> */}
 
               <div className="h-[1px] w-full bg-white/20 mt-4"></div>
 
               <div className="flex justify-between items-center mt-4">
                 <div className="text-white font-bold text-xs">OPTIMIZATION</div>
                 <select
-                  value={"none"}
+                  value={"balanced"}
                   className="select select-sm max-w-xs"
                   onChange={(e) => setOptimization(e.target.value)}
                 >
-                  <option value={"none"}>None</option>
+                  <option value={"balanced"}>Balanced</option>
                   <option value={"max"}>Maximize</option>
                   <option value={"min"}>Minimize</option>
                 </select>
