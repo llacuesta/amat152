@@ -85,7 +85,7 @@ function getTakenAndRemainingCourses(curriculum, year, sem) {
         for (const semKey in curriculum.curriculumData[yearKey]) {
 
             const semesterData = curriculum.curriculumData[yearKey][semKey];
-            if (!semesterData || !semesterData.courses) continue;
+            if (!semesterData || !semesterData?.courses) continue;
 
             semesterData.courses.forEach(course => {
                 if (
