@@ -1,6 +1,6 @@
 // imports
 const { BSCSCurriculum } = require("./data/curriculum_data.js");
-const { getCourses, getTakenAndRemainingCourses } = require("./core/functions.js");
+const { getCoursesDP, getTakenAndRemainingCourses } = require("./core/functions.js");
 
 // handle endpoints
 exports.getTest = () => (req, res) => {
