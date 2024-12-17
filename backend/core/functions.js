@@ -48,13 +48,16 @@ function getCoursesDP(curriculum, sem, haventTaken = [], priority = [], workload
 
     // Backtrack to find the optimal course distribution
     let i = n, j = m;
-    const suggestedCourses = [];
+    const suggestedCourses = new Set();
     while (i > 0 && j > 0) {
         let currentWorkload = workload[i][j];
         for (let k = i; k >= 1; k--) {
             if (dp[i][j] === Math.max(dp[k - 1][j - 1], currentWorkload)) {
                 for (let l = k; l <= i; l++) {
-                    suggestedCourses.push(curriculum.getCourseById(courses[l - 1]));
+                    const course = curriculum.getCourseById(courses[l - 1]);
+                    if (!suggestedCourses.has(course.id)) {
+                        suggestedCourses.add(course.id);
+                    }
                 }
                 i = k - 1;
                 j--;
@@ -64,7 +67,7 @@ function getCoursesDP(curriculum, sem, haventTaken = [], priority = [], workload
         }
     }
 
-    return suggestedCourses.reverse();
+    return Array.from(suggestedCourses).map(courseId => curriculum.getCourseById(courseId)).reverse();
 }
 
 /**
