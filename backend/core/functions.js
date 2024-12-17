@@ -38,8 +38,8 @@ function getCoursesDP(curriculum, sem, haventTaken = [], priority = [], workload
                 dp[i][j] = Math.min(dp[i][j], Math.max(dp[k - 1][j - 1], currentWorkload));
             } else if (workloadPreference === "min") {
                 dp[i][j] = Math.min(dp[i][j], Math.min(dp[k - 1][j - 1], currentWorkload));
-            } else {
-                dp[i][j] = Math.min(dp[i][j], Math.max(dp[k - 1][j - 1], currentWorkload));
+            } else { // balanced
+                dp[i][j] = Math.min(dp[i][j], dp[k - 1][j - 1] + currentWorkload);
             }
             workload[i][j] = currentWorkload;
         }
@@ -59,7 +59,16 @@ function getCoursesDP(curriculum, sem, haventTaken = [], priority = [], workload
     while (i > 0 && j > 0) {
         let currentWorkload = workload[i][j];
         for (let k = i; k >= 1; k--) {
-            if (dp[i][j] === Math.max(dp[k - 1][j - 1], currentWorkload)) {
+            let condition;
+            if (workloadPreference === "max") {
+                condition = dp[i][j] === Math.max(dp[k - 1][j - 1], currentWorkload);
+            } else if (workloadPreference === "min") {
+                condition = dp[i][j] === Math.min(dp[k - 1][j - 1], currentWorkload);
+            } else { // balanced
+                condition = dp[i][j] === dp[k - 1][j - 1] + currentWorkload;
+            }
+
+            if (condition) {
                 for (let l = k; l <= i; l++) {
                     const course = curriculum.getCourseById(courses[l - 1]);
                     if (!suggestedCourses.has(course.id)) {
