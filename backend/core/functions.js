@@ -11,149 +11,62 @@ import  {Curriculum}  from "./curriculum.js";
  * @param {[string]} priority 
  * @returns [{ courseId, courseName, workload, units }]
  */
-function getCourses(curriculum, year, sem, criterion, isMax, haventTaken = [], priority = []) {
-    /*
-        HELPER FUNCTIONS
-    */
-    // marks if a course is ineligible
-    const markIneligible = (courseId) => {
-        let stack = [courseId];
-        
-        while (stack.length > 0) {
-            let current = stack.pop();
-            
-            if (curriculum.graph[current] && !ineligible.has(current)) {
-                curriculum.graph[current].edges.forEach(childCourse => {
-                    if (!ineligible.has(childCourse)) {
-                        stack.push(childCourse);
-                    }
-                });
-                ineligible.add(current);
-            }
-        }
-    }
-    // sorts courses by workload
-    const sortCoursesByWorkload = (courseIds, ascending = true) => {
-        return courseIds.sort((a, b) => {
-            const workloadA = curriculum.getCourseById(a).workload;
-            const workloadB = curriculum.getCourseById(b).workload;
-            return ascending ? workloadA - workloadB : workloadB - workloadA;
-        });
-    };
-    // replace courses occassionally according to workload
-    const replaceBetterCourse = (newCourse, isMax) => {
-        let leastCourseIdx = -1;
-        let leastWorkload = isMax ? -Infinity : Infinity;
-    
-        for (let i = 0; i < suggestedCourses.length; i++) {
-            const workload = suggestedCourses[i].workload;
-    
-            if ((isMax && workload < leastWorkload) || (!isMax && workload > leastWorkload)) {
-                leastWorkload = workload;
-                leastCourseIdx = i;
-            }
-        }
-    
-        if (leastCourseIdx !== -1 && ((isMax && newCourse.workload > leastWorkload) || (!isMax && newCourse.workload < leastWorkload))) {
-            suggestedCourses[leastCourseIdx] = newCourse;
-            currentUnits += newCourse.units - suggestedCourses[leastCourseIdx].units;
-        }
-    };
-    
-    /*
-        FUNCTION LOGIC
-    */
-    // get all courses for indicated sem
-    let semData = curriculum.getSemester(year, sem);
-    let availableCourseIds = [...priority];
-    availableCourseIds.push(...haventTaken);
-    availableCourseIds.push(...semData.courses.map(course => course.id));
-
-    // filter ineligible courses using dfs
-    // remove priority course dependents first before removing havent taken
-    // this is to avoid cases where priority depends on havent taken
-    let ineligible = new Set();
-    priority.forEach(courseId => {
-        markIneligible(courseId);
+function getCoursesDP(curriculum, sem, haventTaken = [], priority = [], workloadPreference = 'balanced') {
+    const courses = curriculum.topologicalSort().filter(courseId => {
+        const course = curriculum.getCourseById(courseId);
+        return haventTaken.includes(courseId) || priority.includes(courseId) || course.availability.includes(sem);
     });
-    ineligible.delete(...priority)
-    haventTaken.forEach(courseId => {
-        markIneligible(courseId);
-    });
-    ineligible.delete(...haventTaken)
-    availableCourseIds = availableCourseIds.filter(courseId => !ineligible.has(courseId));
 
-    // topological sorting to ensure valid course order
-    const sortedCourseIds = curriculum.topologicalSort();
-    availableCourseIds = availableCourseIds.filter(courseId => sortedCourseIds.includes(courseId));
+    const n = courses.length;
+    const m = 8; // Assuming 8 semesters for a 4-year course
 
-    // optimizing according to criterion
-    let minUnits = 15;
-    if (criterion === "units") {
-        if (isMax === true) {
-            minUnits = 12;
-        } else if (isMax === false) {
-            minUnits = 18;
-        }
-    }
+    // Initialize dp table
+    const dp = Array.from({ length: n + 1 }, () => Array(m + 1).fill(Infinity));
+    dp[0][0] = 0;
 
-    // get suggested courses
-    let currentUnits = 0;
-    let suggestedCourses = [];
-    let nextYear = year;
-    let nextSem = sem;
-    // processing available courses
-    if (criterion === "workload" && isMax !== undefined) {
-        availableCourseIds = sortCoursesByWorkload(availableCourseIds, isMax); // sort by workload
-    }
-    for (let course of availableCourseIds) {
-        if (currentUnits < minUnits) {
-            let newCourse = curriculum.getCourseById(course);
-            suggestedCourses.push(newCourse);
-            currentUnits += newCourse.units;
-        } else if (criterion === "workload" && isMax !== undefined) {
-            let newCourse = curriculum.getCourseById(course);
-            replaceBetterCourse(newCourse, isMax);
-        }
-    }
+    // Initialize workload table
+    const workload = Array.from({ length: n + 1 }, () => Array(m + 1).fill(0));
 
-    // queue up new semesters if minUnits is not reached
-    while (currentUnits < minUnits) {
-        if (nextSem == 2) {
-            nextYear += 1;
-            nextSem = 1;
-        } else {
-            nextSem += 1;
-        }
-    
-        let nextSemData = curriculum.getCourses(nextYear, nextSem);
-        if (!nextSemData || nextSemData.length === 0) {
-            break; // all semesters done
-        }
-    
-        availableCourseIds.push(...nextSemData.map(course => course.id));
-        availableCourseIds = availableCourseIds.filter(courseId => !ineligible.has(courseId));
-        if (criterion === "workload" && isMax !== undefined) {
-            availableCourseIds = sortCoursesByWorkload(availableCourseIds, isMax);
-        }
-
-        // process newly queued semester courses
-        for (let courseId of availableCourseIds) {
-            if (currentUnits < minUnits) {
-                let newCourse = curriculum.getCourseById(courseId);
-                
-                if (!suggestedCourses.some(c => c.id === courseId)) {
-                    suggestedCourses.push(newCourse);
-                    currentUnits += newCourse.units;
+    // Fill dp table
+    for (let i = 1; i <= n; i++) {
+        for (let j = 1; j <= m; j++) {
+            let currentWorkload = 0;
+            for (let k = i; k >= 1; k--) {
+                currentWorkload += curriculum.getCourseById(courses[k - 1]).workload;
+                if (workloadPreference === "max") {
+                    dp[i][j] = Math.min(dp[i][j], Math.max(dp[k - 1][j - 1], currentWorkload));
+                } else if (workloadPreference === "min") {
+                    dp[i][j] = Math.min(dp[i][j], Math.min(dp[k - 1][j - 1], currentWorkload));
+                } else {
+                    dp[i][j] = Math.min(dp[i][j], Math.max(dp[k - 1][j - 1], currentWorkload));
                 }
-            } else if (criterion === "workload" && isMax !== undefined) {
-                let newCourse = curriculum.getCourseById(courseId);
-                replaceBetterCourse(newCourse, isMax);
+                workload[i][j] = currentWorkload;
             }
         }
     }
 
-    return suggestedCourses
+    // Backtrack to find the optimal course distribution
+    let i = n, j = m;
+    const suggestedCourses = new Set();
+    while (i > 0 && j > 0) {
+        let currentWorkload = workload[i][j];
+        for (let k = i; k >= 1; k--) {
+            if (dp[i][j] === Math.max(dp[k - 1][j - 1], currentWorkload)) {
+                for (let l = k; l <= i; l++) {
+                    const course = curriculum.getCourseById(courses[l - 1]);
+                    if (!suggestedCourses.has(course.id)) {
+                        suggestedCourses.add(course.id);
+                    }
+                }
+                i = k - 1;
+                j--;
+                break;
+            }
+            currentWorkload -= curriculum.getCourseById(courses[k - 1]).workload;
+        }
+    }
+
+    return Array.from(suggestedCourses).map(courseId => curriculum.getCourseById(courseId)).reverse();
 }
 
 /**
@@ -190,7 +103,8 @@ function getTakenAndRemainingCourses(curriculum, year, sem) {
     return { taken, remaining };
 }
 
+
 export {
-    getCourses,
+    getCoursesDP,
     getTakenAndRemainingCourses
 }
