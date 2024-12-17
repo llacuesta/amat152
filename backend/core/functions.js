@@ -18,7 +18,7 @@ function getCoursesDP(curriculum, sem, haventTaken = [], priority = [], workload
     });
 
     const n = courses.length;
-    const m = 8; // Assuming 8 semesters for a 4-year course
+    const m = 12; // Assuming 8 semesters for a 4-year course
 
     // Initialize dp table
     const dp = Array.from({ length: n + 1 }, () => Array(m + 1).fill(Infinity));
