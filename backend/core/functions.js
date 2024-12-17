@@ -82,15 +82,16 @@ function getTakenAndRemainingCourses(curriculum, year, sem) {
     const remaining = [];
 
     for (const yearKey in curriculum.curriculumData) {
+        const yearInt = parseInt(yearKey, 10);
         for (const semKey in curriculum.curriculumData[yearKey]) {
+            const semInt = parseInt(semKey, 10);
 
             const semesterData = curriculum.curriculumData[yearKey][semKey];
             if (!semesterData || !semesterData?.courses) continue;
 
             semesterData.courses.forEach(course => {
                 if (
-                    yearKey < year || 
-                    (yearKey === year && semKey < sem)
+                    yearInt < year || (yearInt === year && semInt < sem)
                 ) {
                     taken.push(course);
                 } else {
@@ -102,6 +103,7 @@ function getTakenAndRemainingCourses(curriculum, year, sem) {
 
     return { taken, remaining };
 }
+
 
 
 export {
