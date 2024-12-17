@@ -6,7 +6,7 @@ const courses = [
     data: {
       courseID: "CMSC 12",
       units: "3",
-      status: 2,
+      status: 0,
     },
   },
   {
@@ -324,7 +324,7 @@ const courses = [
     type: "custom",
     position: { x: 1400, y: 0 },
     data: {
-      courseID: "CMSC 124",
+      courseID: "CMSC 128",
       units: "3",
       status: 0,
     },
