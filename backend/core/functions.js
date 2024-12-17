@@ -1,5 +1,4 @@
-const { Curriculum } = require("./curriculum")
-
+import  {Curriculum}  from "./curriculum.js";
 /**
  * Generates course suggestions for next semester.
  * 
@@ -191,7 +190,7 @@ function getTakenAndRemainingCourses(curriculum, year, sem) {
     return { taken, remaining };
 }
 
-module.exports = {
+export {
     getCourses,
     getTakenAndRemainingCourses
 }
